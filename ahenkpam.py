@@ -59,6 +59,17 @@ def install_packages():
         print(results[1])
 
 def configureAhenkConf():
+    parser = SafeConfigParser()
+    parser.read('configuration/ahenk.conf')
+    parser.set('CONNECTION', 'host', lider_server_ip)
+    parser.set('CONNECTION', 'port', '5222')
+    parser.set('CONNECTION', 'receiverjid', 'lider_sunucu')
+    parser.set('CONNECTION', 'receiverresource', 'Smack')
+    parser.set('CONNECTION', 'servicename', lider_service_name)
+
+    with open('configuration/ahenk.conf', 'w') as configfile:
+        parser.write(configfile)
+
     None;
 
 
@@ -102,7 +113,15 @@ def convert_files():
 
 
 def restartServices():
-    print("refresing services")
+    try:
+        cmd = '/etc/init.d/nslcd restart /etc/init.d/nscd restart /etc/init.d/ahenk restart'
+        results = execute(cmd)
+        if (results[0] == 0):
+            print(results[1])
+
+        print("refresing services")
+    except Exception as e:
+        print(e)
 
 
 # # install requried pam modle packages
@@ -114,6 +133,12 @@ def restartServices():
 #install requried pam modle packages
 
 # copyPamFiles()
+
+lider_server_ip=input("Lütfen Lider Sunucu Adresini giriniz : ")
+print("Ldap Sunucu IP : " + lider_server_ip)
+
+lider_service_name=input("Lütfen Lider Servis Adını giriniz (Örn: im.mys.pardus.org)")
+print("Lider Servis Adı : " + lider_service_name)
 
 ldap_server_ip=input("Lütfen LDAP Sunucu Adresini giriniz : ")
 print("Ldap Sunucu IP : " + ldap_server_ip)
@@ -132,9 +157,7 @@ else:
     exit()
 
 
-
-
-
+configureAhenkConf()
 
 
 
