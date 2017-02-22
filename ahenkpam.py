@@ -168,7 +168,10 @@ print("Ldap Sunucu IP : " + ldap_server_ip)
 ldap_base_dn=input("Lütfen LDAP Düğümü (base dn) giriniz (Örn:dc=mys,dc=pardus,dc=org) :")
 print("LDAP Base Dn :" + ldap_base_dn)
 
-ldap_root_dn=input("Lütfen LDAP Root Düğümü (root dn) giriniz (Örn:cn=admin,dc=mys,dc=pardus,dc=org) :")
+ldap_root_user=input("Lütfen LDAP Admin Kullanıcısını giriniz:")
+
+ldap_root_dn="cn="+str(ldap_root_user)+","+ldap_base_dn
+
 print("LDAP Root Dn :" + ldap_root_dn)
 
 install_ok= input("Kuruluma başlamak istiyor musunuz?(E):")
