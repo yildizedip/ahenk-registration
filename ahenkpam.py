@@ -87,13 +87,13 @@ def copyPamFiles():
 
         Util.copy_file(file_source_libnss_ldap,file_dest_libnss_ldap);
 
-        Util.copy_file(file_source_mkhomedir,file_dest_libnss_ldap);
+        Util.copy_file(file_source_mkhomedir,file_dest_mkhomedir);
 
-        Util.copy_file(file_source_pam_ldap_conf,file_dest_libnss_ldap);
+        Util.copy_file(file_source_nsswitch,file_dest_nsswitch);
 
-        Util.copy_file(file_source_nsswitch,file_dest_libnss_ldap);
+        Util.copy_file(file_source_pam_ldap_conf,file_dest_pam_ldap_conf);
 
-        Util.copy_file(file_source_pam_ldap_conf,file_dest_libnss_ldap);
+        Util.copy_file(file_source_nslcd_conf, file_dest_nslcd_conf);
 
         Util.copy_file(file_source_ahenk_conf,file_dest_ahenk_conf);
 
@@ -176,11 +176,11 @@ print("LDAP Root Dn :" + ldap_root_dn)
 
 install_ok= input("Kuruluma başlamak istiyor musunuz?(E):")
 if install_ok=='E' or install_ok=='e' or install_ok =="":
-    install_packages()
+    # install_packages()
     configureAhenkConf()
     convert_files()
-    copyPamFiles()
-    restartServices()
+    # copyPamFiles()
+    # restartServices()
 else:
     exit()
 
