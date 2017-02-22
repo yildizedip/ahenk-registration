@@ -59,7 +59,7 @@ class Util:
     @staticmethod
     def copy_file(source_full_path, destination_full_path):
         try:
-            print("file copying..Source : "+ str(source_full_path)+"  Destination : "+ str(destination_full_path))
+            print("File copying..Source : "+ str(source_full_path)+"  Destination : "+ str(destination_full_path))
             shutil.copy2(source_full_path, destination_full_path)
             print("File copied..")
         except:
