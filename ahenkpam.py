@@ -37,6 +37,7 @@ file_dest_ahenk_conf ='/etc/ahenk/ahenk.conf'
 def execute(command, stdin=None, env=None, cwd=None, shell=True, result=True):
 
    try:
+       print("Command executed : "+ str(command))
        process = subprocess.Popen(command, stdin=stdin, env=env, cwd=cwd, stderr=subprocess.PIPE,
                                   stdout=subprocess.PIPE, shell=shell)
        if result is True:
@@ -51,13 +52,16 @@ def execute(command, stdin=None, env=None, cwd=None, shell=True, result=True):
 
 
 def install_packages():
-    cmd = 'apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -qq libpam-ldap libnss-ldap nslcd'
-    results = execute(cmd)
-    if (results[0] == 0):
-        print(results[1])
+    try:
+        cmd = 'apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -qq libpam-ldap libnss-ldap nslcd'
+        print("Execute ")
+        results = execute(cmd)
+        if (results[0] == 0):
+            print(results[1])
+    except Exception as e:
+        print(e)
 
 def configureAhenkConf():
-
     try:
         parser = SafeConfigParser()
         parser.read('configuration/ahenk.conf')
@@ -70,7 +74,6 @@ def configureAhenkConf():
         with open(file_source_ahenk_conf, 'w') as configfile:
             parser.write(configfile)
             print("Ahenk Configuration Finished..")
-
 
     except Exception as e:
         print(e)
@@ -146,8 +149,6 @@ def restartServices():
         print(e)
 
 
-
-
 # # install requried pam modle packages
 # # cmd="apt-get update"
 # # results=execute(cmd)
@@ -155,34 +156,34 @@ def restartServices():
 # #     print(results[1])
 #
 #install requried pam modle packages
-
 #
 
-lider_server_ip=input("Lütfen Lider Sunucu Adresini giriniz : ")
-print("Ldap Sunucu IP : " + lider_server_ip)
+lider_server_ip=input("Lütfen XMPP Sunucu Adresini giriniz :  ")
+print("XMPP Sunucu IP : " + lider_server_ip)
 
-lider_service_name=input("Lütfen Lider Servis Adını giriniz (Örn: im.mys.pardus.org)")
-print("Lider Servis Adı : " + lider_service_name)
+lider_service_name=input("Lütfen XMPP Servis Adını giriniz (Örn: im.mys.pardus.org) :  ")
+print("XMPP Servis Adı : " + lider_service_name)
 
 ldap_server_ip=input("Lütfen LDAP Sunucu Adresini giriniz : ")
 print("Ldap Sunucu IP : " + ldap_server_ip)
 
-ldap_base_dn=input("Lütfen LDAP Düğümü (base dn) giriniz (Örn:dc=mys,dc=pardus,dc=org) :")
+ldap_base_dn=input("Lütfen LDAP Düğümü (base dn) giriniz (Örn:dc=mys,dc=pardus,dc=org) : ")
 print("LDAP Base Dn :" + ldap_base_dn)
 
-ldap_root_user=input("Lütfen LDAP Admin Kullanıcısını giriniz:")
+ldap_root_user=input("Lütfen LDAP Admin Kullanıcısını giriniz (admin) : ")
 
 ldap_root_dn="cn="+str(ldap_root_user)+","+ldap_base_dn
 
 print("LDAP Root Dn :" + ldap_root_dn)
 
-install_ok= input("Kuruluma başlamak istiyor musunuz?(E):")
+install_ok= input("Kuruluma başlamak istiyor musunuz?(E): ")
+
 if install_ok=='E' or install_ok=='e' or install_ok =="":
-    # install_packages()
+    install_packages()
     configureAhenkConf()
     convert_files()
-    # copyPamFiles()
-    # restartServices()
+    copyPamFiles()
+    restartServices()
 else:
     exit()
 
